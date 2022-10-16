@@ -1,15 +1,30 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div>
+    <p>Spaces lef: {{ spacesLeft }} out of {{ capacity }}</p>
+    <p>Capacity: {{ capacity }}</p>
+    <button @click="increaseCapacity">Increate capacity</button>
+    <ul>
+      <li v-for="(name, index) in attending" :key="index">{{ name }}</li>
+    </ul>
+  </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import { computed, reactive, toRefs } from "vue";
 
 export default {
-  name: "App",
-  components: {
-    HelloWorld,
+  setup() {
+    const event = reactive({
+      capacity: 10,
+      attending: ["John", "Jane", "Bob"],
+      spacesLeft: computed(() => event.capacity - event.attending.length),
+    });
+
+    function increaseCapacity() {
+      event.capacity++;
+    }
+
+    return { ...toRefs(event), increaseCapacity };
   },
 };
 </script>
